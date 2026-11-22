@@ -28,6 +28,18 @@ err = ff.EachSubmission(ctx, form.ID, url.Values{"status": {"completed"}}, func(
 - **Pagination**: `formflow.Each[T]` / `formflow.List[T]` work on any list endpoint.
 - **Everything else**: `formflow.Data[T](ctx, ff, formflow.Request{Method: "POST", Path: "/approvals/apr_1/cancel", Body: map[string]any{}})`.
 
+## More resources
+
+```go
+_, _ = ff.InviteMember(ctx, "ada@example.com", "editor")        // ListMembers, SetMemberRole, RemoveMember
+key, _ := ff.CreateAPIKey(ctx, "ci", []string{"form:read"}, 0)  // key.Key is shown once; ListAPIKeys, RevokeAPIKey
+_ = ff.EachAuditEvent(ctx, url.Values{"action": {"form.published"}}, func(e formflow.AuditEvent) error { return nil })
+job, _ := ff.ExportAuditLog(ctx, "csv", "org", nil)             // ListOrgAuditEvents is org owners and admins only
+done, _ := ff.WaitExport(ctx, job.Export.ID, 0, 0)              // done.URL is a short-lived download link
+```
+
+Also: `ListTables`, `CreateTable`, `AddTableRows`, `ListTableRows`, `ListWorkflows`, `CreateWorkflow`, `ListWorkflowExecutions`, `ListThemes`, `CreateTheme`, `GenerateForm` (prompt to a validated definition, uses AI credits), `ListFiles` and `UploadFile` (the media library).
+
 ## Webhooks
 
 ```go
